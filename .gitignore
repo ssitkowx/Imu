@@ -34,5 +34,7 @@
 /Build
 /.vscode
 /CMakeUserPresets.json
+/Project/.vcode
 /Tests/Build
 /Tests/.vscode
+/Tests/CMakeUserPresets.json
