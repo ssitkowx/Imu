@@ -6,14 +6,14 @@ from conan.tools.files import copy, load
 from conan.tools.cmake import CMake, cmake_layout
 
 class Conan(ConanFile):
-    name            = "template"
-    version         = "x.x"
+    name            = "Imu"
+    version         = "1.0"
     user            = "ssitkowx"
     channel         = "stable"
     license         = "freeware"
     repoUrl         = "https://github.com/ssitkowx"
     url             = repoUrl + '/' + name + '.git'
-    description     = "General class for gpio"
+    description     = "Imu, Quaternion, two Kalman filters"
     settings        = "os", "compiler", "build_type", "arch"
     options         = { "shared": [True, False] }
     default_options = { "shared": False         }
@@ -24,7 +24,7 @@ class Conan(ConanFile):
     downloadPath    = "/home/sylwester/.conan2/download"
     repoPath        = downloadPath + '/repos'
     packagePath     = downloadPath + '/packages'
-    packages        = []
+    packages        = ["utils/1.4", "i2c/1.3", "rtos/1.3", "logger/1.3", "loggerhw/1.4"]
 
     def layout (self):
         projectPath = os.getcwd ().replace ('/Conan','')

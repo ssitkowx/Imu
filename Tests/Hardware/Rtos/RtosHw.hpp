@@ -1,0 +1,46 @@
+#pragma once
+
+///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////// INCLUDES /////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+#include "Rtos.hpp"
+#include "Utils.hpp"
+#include "Settings.hpp"
+#include <gmock/gmock.h>
+
+///////////////////////////////////////////////////////////////////////////////
+/////////////////////////// MACROS/DEFINITIONS ////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+#define SET_RTOS_INST(INSTANCE) Rtos <class RtosHw>::SetInst (INSTANCE);
+
+///////////////////////////////////////////////////////////////////////////////
+/////////////////////////// CLASSES/STRUCTURES ////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+class RtosHw final : public Rtos <RtosHw>
+{
+    public:
+        RtosHw () = default;
+        ~RtosHw () = default;
+
+        MOCK_METHOD0 (Init                    , void     (void));
+        MOCK_METHOD0 (DeInit                  , void     (void));
+        MOCK_METHOD0 (TaskDelete              , void     (void));
+        MOCK_METHOD0 (GetTickCount            , uint32_t (void));
+        MOCK_METHOD0 (GetFreeHeapSize         , uint16_t (void));
+        MOCK_METHOD1 (DelayInMs               , void     (const uint32_t vMs));
+        MOCK_METHOD1 (TakeMutex               , bool     (std::string_view vName));
+        MOCK_METHOD1 (GiveMutex               , void     (std::string_view vName));
+
+        MOCK_METHOD1 (SendMsgIdQueue          , bool     (const uint8_t vId));
+        MOCK_METHOD1 (ReceiveMsgIdQueue       , bool     (uint8_t * const vId));
+
+        MOCK_METHOD1 (uint32_tGetFreeStackSize, uint16_t (std::string_view vName));
+        MOCK_METHOD1 (GiveSemaphoreFromISR    , bool     (std::string_view vName));
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/////////////////////////////// END OF FILE ///////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
