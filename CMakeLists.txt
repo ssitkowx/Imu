@@ -1,5 +1,5 @@
 CMAKE_MINIMUM_REQUIRED (VERSION 3.16)
-PROJECT                (tests)
+PROJECT                (imu)
 
 SET (ProjectName  Project)
 SET (TestsName    Tests)
