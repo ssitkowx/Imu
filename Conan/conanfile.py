@@ -6,7 +6,7 @@ from conan.tools.files import copy, load
 from conan.tools.cmake import CMake, cmake_layout
 
 class Conan(ConanFile):
-    name            = "Imu"
+    name            = "imu"
     version         = "1.0"
     user            = "ssitkowx"
     channel         = "stable"
