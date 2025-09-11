@@ -19,7 +19,7 @@
 class Settings
 {
     public:
-        class ImuSettings Imu;
+        ImuSettings Imu;
 
         struct Timer
         {
