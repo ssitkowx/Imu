@@ -3,7 +3,7 @@ PROJECT                (tests)
 
 SET (ProjectName  Project)
 SET (TestsName    Tests)
-SET (LibraryName  Lib)
+SET (LibraryName  ${CMAKE_PROJECT_NAME})
 
 SET (PackageNames i2c rtos utils logger loggerhw)
 SET (PackageIncludePath                        /home/sylwester/.conan2/download/packages)
