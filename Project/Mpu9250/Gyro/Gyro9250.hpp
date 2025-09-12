@@ -14,7 +14,7 @@
 
 class Gyro9250 : public Imu<Gyro9250>
 {
-    static constexpr char * Module = (char *)"Gyro9250";
+    static constexpr char * module = (char *)"Gyro9250";
     friend Imu<Gyro9250>;
 
     public:

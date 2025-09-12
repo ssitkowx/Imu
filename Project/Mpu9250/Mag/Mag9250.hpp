@@ -14,7 +14,7 @@
 
 class Mag9250 : public Imu<Mag9250>
 {
-    static constexpr char * Module = (char *)"Mag9250";
+    static constexpr char * module = (char *)"Mag9250";
     friend Imu<Mag9250>;
 
     public:

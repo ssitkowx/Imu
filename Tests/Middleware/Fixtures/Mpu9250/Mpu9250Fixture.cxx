@@ -22,7 +22,7 @@ using ::testing::SetArgPointee;
 
 TEST_F (Mpu9250Fixture, Calibrate)
 {
-    LOGW (Module, "Calibrate");
+    LOGW (module, "Calibrate");
 
     EXPECT_CALL (I2cHw, Receive (I2cHw::EI2c::One, 0, _, 3))    .Times    (1)
                                                                 .WillOnce (SetArgPointee<2>(0x48));
@@ -110,7 +110,7 @@ TEST_F (Mpu9250Fixture, Calibrate)
 
 TEST_F (Mpu9250Fixture, CheckQuaternionAngles)
 {
-    LOGW (Module, "Quaternion");
+    LOGW (module, "Quaternion");
 
     EXPECT_CALL (I2cHw, Receive (I2cHw::EI2c::One, 0, _, 3))    .Times    (1)
                                                                 .WillOnce (SetArgPointee<2>(0x48));

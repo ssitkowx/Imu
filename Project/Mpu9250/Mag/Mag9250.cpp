@@ -71,9 +71,9 @@ void Mag9250::Init (void)
     std::array <uint8_t, 3> data;
     i2cHw.Receive (I2cHw::EI2c::One, WIA, (uint8_t *)&data, data.size ());
 
-    LOGI (Module, "Data from Mag: %d", data [0]);
+    LOGI (module, "Data from Mag: %d", data [0]);
 
-    if (data [0] != WIA_DATA) { LOGE (Module, "Device not found"); return; }
+    if (data [0] != WIA_DATA) { LOGE (module, "Device not found"); return; }
 
     i2cHw.Send (I2cHw::EI2c::One, CNTL1, 0x00, 0);
     RtosHw::GetInst ()->DelayInMs (10);
@@ -135,7 +135,7 @@ void Mag9250::Calibrate (void)
 {
     if (CALIBRATION_TIME == 0) { return; }
 
-    LOGD (Module, "Rotate device. Calibrate for 1min");
+    LOGD (module, "Rotate device. Calibrate for 1min");
 
     Settings::GetInst ()->Imu.Mag.Scale.X  = 1;
     Settings::GetInst ()->Imu.Mag.Scale.Y  = 1;
@@ -153,37 +153,37 @@ void Mag9250::Calibrate (void)
     {
         const ImuSettings::Axes axes = GetAxes ();
 
-        LOGI (Module, "Mag: X: %f, Y: %f, Z: %f", axes.X, axes.Y, axes.Z);
+        LOGI (module, "Mag: X: %f, Y: %f, Z: %f", axes.X, axes.Y, axes.Z);
 
         if (axes.X < xMin)
         {
             xMin = axes.X;
-            LOGI (Module, "xMin: " + std::to_string (xMin));
+            LOGI (module, "xMin: " + std::to_string (xMin));
         }
         if (axes.Y < yMin)
         {
             yMin = axes.Y;
-            LOGI (Module, "yMin: " + std::to_string (yMin));
+            LOGI (module, "yMin: " + std::to_string (yMin));
         }
         if (axes.Z < zMin)
         {
             zMin = axes.Z;
-            LOGI (Module, "zMin: " + std::to_string (zMin));
+            LOGI (module, "zMin: " + std::to_string (zMin));
         }
         if (axes.X > xMax)
         {
             xMax = axes.X;
-            LOGD (Module, "xMax: " + std::to_string (xMax));
+            LOGD (module, "xMax: " + std::to_string (xMax));
         }
         if (axes.Y > yMax)
         {
             yMax = axes.Y;
-            LOGI (Module, "yMax: " + std::to_string (yMax));
+            LOGI (module, "yMax: " + std::to_string (yMax));
         }
         if (axes.Z > zMax)
         {
             zMax = axes.Z;
-            LOGI (Module, "zMax: " + std::to_string (zMax));
+            LOGI (module, "zMax: " + std::to_string (zMax));
         }
     }
 
@@ -193,10 +193,10 @@ void Mag9250::Calibrate (void)
     calcHardIronOffset ({ xMin, yMin, zMin }, { xMax, yMax, zMax });
     calcSoftIronCoeff  ({ xMin, yMin, zMin }, { xMax, yMax, zMax });
 
-    LOGI (Module, "xMin: " + std::to_string (xMin) + " yMin: " + std::to_string (yMin) + " zMin: " + std::to_string (zMin));
-    LOGI (Module, "xMax: " + std::to_string (xMax) + " yMax: " + std::to_string (yMax) + " zMax: " + std::to_string (zMax));
-    LOGI (Module, "Hard iron. Offsets: X: " + std::to_string (Settings::GetInst ()->Imu.Mag.Offset.X) + "[LSB], Y: " + std::to_string (Settings::GetInst ()->Imu.Mag.Offset.Y) + "[LSB], Z: " + std::to_string (Settings::GetInst ()->Imu.Mag.Offset.Z) + "[LSB]");
-    LOGI (Module, "Soft iron. Scale  : X: " + std::to_string (Settings::GetInst ()->Imu.Mag.Scale.X) + " Y: "        + std::to_string (Settings::GetInst ()->Imu.Mag.Scale.Y)  + " Z: "       + std::to_string (Settings::GetInst ()->Imu.Mag.Scale.Z));
+    LOGI (module, "xMin: " + std::to_string (xMin) + " yMin: " + std::to_string (yMin) + " zMin: " + std::to_string (zMin));
+    LOGI (module, "xMax: " + std::to_string (xMax) + " yMax: " + std::to_string (yMax) + " zMax: " + std::to_string (zMax));
+    LOGI (module, "Hard iron. Offsets: X: " + std::to_string (Settings::GetInst ()->Imu.Mag.Offset.X) + "[LSB], Y: " + std::to_string (Settings::GetInst ()->Imu.Mag.Offset.Y) + "[LSB], Z: " + std::to_string (Settings::GetInst ()->Imu.Mag.Offset.Z) + "[LSB]");
+    LOGI (module, "Soft iron. Scale  : X: " + std::to_string (Settings::GetInst ()->Imu.Mag.Scale.X) + " Y: "        + std::to_string (Settings::GetInst ()->Imu.Mag.Scale.Y)  + " Z: "       + std::to_string (Settings::GetInst ()->Imu.Mag.Scale.Z));
 }
 
 void Mag9250::setSensitivity (const uint8_t vData)
@@ -218,7 +218,7 @@ void Mag9250::calcSoftIronCoeff (const ImuSettings::Axes vMin, const ImuSettings
         deltaY == 0 ||
         deltaZ == 0 )
     {
-        LOGE (Module, "Delta can't be zero. Calibration incorrect");
+        LOGE (module, "Delta can't be zero. Calibration incorrect");
         return;
     }
 

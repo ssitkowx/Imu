@@ -55,10 +55,11 @@ void Gyro9250::Init (void)
     uint8_t data = CONFIG_FS_SEL1 |
                    CONFIG_FS_SEL0 |
                    CONFIG_FCHOICE_B1;
-    i2cHw.Send (I2cHw::EI2c::Zero, CONFIG, &data, 0);
+    i2cHw.Send (I2cHw::EI2c::Zero, CONFIG, &data, 1);
 
     uint8_t sensitivity = 0;
     i2cHw.Receive  (I2cHw::EI2c::Zero, CONFIG, &sensitivity, 1);
+    LOGI (module, "Sensitivity read: %d", sensitivity);
     setSensitivity (sensitivity);
 }
 
@@ -78,7 +79,7 @@ ImuSettings::Axes Gyro9250::GetAxes (void)
 
 void Gyro9250::Calibrate (void)
 {
-    LOGI (Module, "Stand still. Calibrate for 1s");
+    LOGI (module, "Stand still. Calibrate for 1s");
 
     Settings::GetInst ()->Imu.Gyro.Offset.X = 0;
     Settings::GetInst ()->Imu.Gyro.Offset.Y = 0;
@@ -106,7 +107,7 @@ void Gyro9250::Calibrate (void)
     Settings::GetInst ()->Imu.Gyro.Offset.Y = ySum * Sensitivity / numOfSamples;
     Settings::GetInst ()->Imu.Gyro.Offset.Z = zSum * Sensitivity / numOfSamples;
 
-    LOGI (Module, "Offsets: X: " + std::to_string (Settings::GetInst ()->Imu.Gyro.Offset.X) +
+    LOGI (module, "Offsets: X: " + std::to_string (Settings::GetInst ()->Imu.Gyro.Offset.X) +
                   "[LSB], Y: "   + std::to_string (Settings::GetInst ()->Imu.Gyro.Offset.Y) +
                   "[LSB], Z: "   + std::to_string (Settings::GetInst ()->Imu.Gyro.Offset.Z) + "[LSB]");
 }

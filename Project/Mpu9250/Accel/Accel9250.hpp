@@ -14,7 +14,7 @@
 
 class Accel9250 : public Imu<Accel9250>
 {
-    static constexpr char * Module = (char *)"Accel9250";
+    static constexpr char * module = (char *)"Accel9250";
     friend Imu<Accel9250>;
 
     public:

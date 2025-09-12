@@ -59,7 +59,7 @@ class Mpu9250Fixture : public ::testing::Test
         
         void SetUp () override
         {
-            Mpu9250.IsMagEnabled = true;
+            //Mpu9250.IsMagEnabled = true;
             
             Settings::GetInst ()->Imu.Accel.Offset.X = 0;
             Settings::GetInst ()->Imu.Accel.Offset.Y = 0;

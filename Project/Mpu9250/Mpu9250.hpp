@@ -31,7 +31,7 @@ class Mpu9250 final
                                                           Accel (vAccel) {}
         ~Mpu9250 () = default;
 
-        bool IsMagEnabled = false;
+        bool IsMagEnabled = true;
         
         void Init      (void);
         void Process   (void);

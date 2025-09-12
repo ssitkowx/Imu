@@ -3,9 +3,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <math.h>
+#include "Settings.hpp"
 #include "LoggerHw.hpp"
 #include "Accel9250.hpp"
-#include "Settings.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////
 /////////////////////////// MACROS/DEFINITIONS ////////////////////////////////
@@ -75,6 +75,7 @@ void Accel9250::Init (void)
 
     uint8_t sensitivity = 0;
     i2cHw.Receive  (I2cHw::EI2c::Zero, CONFIG, &sensitivity, 1);
+    LOGI (module, "Sensitivity read: %d", sensitivity);
     setSensitivity (sensitivity);
 }
 
@@ -94,7 +95,7 @@ ImuSettings::Axes Accel9250::GetAxes (void)
 
 void Accel9250::Calibrate (void)
 {
-    LOGI (Module, "Stand still. Calibrate for 1s");
+    LOGI (module, "Stand still. Calibrate for 1s");
 
     Settings::GetInst ()->Imu.Accel.Offset.X = 0;
     Settings::GetInst ()->Imu.Accel.Offset.Y = 0;
@@ -122,7 +123,7 @@ void Accel9250::Calibrate (void)
     Settings::GetInst ()->Imu.Accel.Offset.Y = ySum * Sensitivity / numOfSamples;
     Settings::GetInst ()->Imu.Accel.Offset.Z = Sensitivity - (zSum * Sensitivity / numOfSamples);
 
-    LOGI (Module, "Offsets: X: " + std::to_string (Settings::GetInst ()->Imu.Accel.Offset.X) +
+    LOGI (module, "Offsets: X: " + std::to_string (Settings::GetInst ()->Imu.Accel.Offset.X) +
                   "[LSB], Y: "   + std::to_string (Settings::GetInst ()->Imu.Accel.Offset.Y) +
                   "[LSB], Z: "   + std::to_string (Settings::GetInst ()->Imu.Accel.Offset.Z) + "[LSB]");
 }

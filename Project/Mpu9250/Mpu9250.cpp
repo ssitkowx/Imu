@@ -194,7 +194,18 @@ void Mpu9250::Init (void)
 
     data = 0;
     i2cHw.Receive (I2cHw::EI2c::Zero, WHO_AM_I, &data, 1);
-    if (data != WHO_AM_I_DATA) { LOGE (module, "Device not found. Expected %d, got: %d", WHO_AM_I, data); }
+
+    if      (data == WHO_AM_I_DATA) { LOGI (module, "Detected Mpu9250"); }
+    else if (data == 0x70)
+    {
+        LOGI (module, "Detected Mpu6500. Mag disabled");
+        IsMagEnabled = false;
+    }
+    else
+    {
+        LOGE (module, "Unknown device: 0x%02X", data);
+        return;
+    }
 
     if (IsMagEnabled == true)
     {
@@ -235,16 +246,19 @@ float Mpu9250::getTemp (void)
 
 struct ImuSettings::Angles Mpu9250::getAngles (void)
 {
+    Settings::GetInst ()->Imu.EFilter = ImuSettings::EFilter::Quaternion;
     const ImuSettings::Axes acclAxes = Accel.GetAxes ();
     const ImuSettings::Axes gyroAxes = Gyro .GetAxes ();
-    const ImuSettings::Axes magAxes  = Mag  .GetAxes ();
-    ImuSettings::Angles     angles   = {};
+    ImuSettings::Axes       magAxes  = { 1, 1, 1 };
 
-    const double diffTime = TimeoutHw.GetDiffTime () * MICRO_TO_SECONDS;
+    if (IsMagEnabled == true) { magAxes = Mag.GetAxes (); }
+
+    ImuSettings::Angles angles   = {};
+    const double        diffTime = TimeoutHw.GetDiffTime () * MICRO_TO_SECONDS;
 
     switch (Settings::GetInst ()->Imu.EFilter)
     {
-          case ImuSettings::EFilter::MagYaw:
+        case ImuSettings::EFilter::MagYaw:
         {
             angles = filter.GetMagYawProcess ({ acclAxes.X,
                                                 acclAxes.Y,

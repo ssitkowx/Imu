@@ -58,8 +58,8 @@ class ImuSettings
             Axes   Offset;
         } Mag;
             
-        Angles        Angle;
-        const EFilter EFilter = EFilter::Quaternion;
+        Angles  Angle;
+        EFilter EFilter = EFilter::Quaternion;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
