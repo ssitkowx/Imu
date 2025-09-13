@@ -59,7 +59,6 @@ void Gyro9250::Init (void)
 
     uint8_t sensitivity = 0;
     i2cHw.Receive  (I2cHw::EI2c::Zero, CONFIG, &sensitivity, 1);
-    LOGI (module, "Sensitivity read: %d", sensitivity);
     setSensitivity (sensitivity);
 }
 

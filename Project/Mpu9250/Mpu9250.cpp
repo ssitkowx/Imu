@@ -167,12 +167,16 @@
 
 void Mpu9250::Init (void)
 {
-    uint8_t data = 0x00;
+    uint8_t data = PWR_MGMT_1_H_RESET;
+    i2cHw.Send (I2cHw::EI2c::Zero, PWR_MGMT_1, &data, 1);
+    RtosHw::GetInst ()->DelayInMs (100);
+
+    data = 0x00;
     i2cHw.Receive (I2cHw::EI2c::Zero, PWR_MGMT_1, &data, 1);
     RtosHw::GetInst ()->DelayInMs (100);
 
     data = PWR_MGMT_1_CLKSEL0;
-    i2cHw.Send (I2cHw::EI2c::Zero, PWR_MGMT_1, &data, 0);
+    i2cHw.Send (I2cHw::EI2c::Zero, PWR_MGMT_1, &data, 1);
     RtosHw::GetInst ()->DelayInMs (100);
 
     data = CONFIG_EXT_DLPF_CFG2 |
@@ -246,7 +250,6 @@ float Mpu9250::getTemp (void)
 
 struct ImuSettings::Angles Mpu9250::getAngles (void)
 {
-    Settings::GetInst ()->Imu.EFilter = ImuSettings::EFilter::Quaternion;
     const ImuSettings::Axes acclAxes = Accel.GetAxes ();
     const ImuSettings::Axes gyroAxes = Gyro .GetAxes ();
     ImuSettings::Axes       magAxes  = { 1, 1, 1 };
@@ -297,10 +300,7 @@ struct ImuSettings::Angles Mpu9250::getAngles (void)
                                                  diffTime);
             break;
         }
-        default:
-        {
-            LOGE (module, "Unsupported filter");
-        }
+        default: { LOGE (module, "Unsupported filter"); }
     };
 
     return angles;

@@ -75,7 +75,6 @@ void Accel9250::Init (void)
 
     uint8_t sensitivity = 0;
     i2cHw.Receive  (I2cHw::EI2c::Zero, CONFIG, &sensitivity, 1);
-    LOGI (module, "Sensitivity read: %d", sensitivity);
     setSensitivity (sensitivity);
 }
 
@@ -121,11 +120,14 @@ void Accel9250::Calibrate (void)
 
     Settings::GetInst ()->Imu.Accel.Offset.X = xSum * Sensitivity / numOfSamples;
     Settings::GetInst ()->Imu.Accel.Offset.Y = ySum * Sensitivity / numOfSamples;
-    Settings::GetInst ()->Imu.Accel.Offset.Z = Sensitivity - (zSum * Sensitivity / numOfSamples);
+    Settings::GetInst ()->Imu.Accel.Offset.Z = zSum * Sensitivity / numOfSamples;
+
+    if (Settings::GetInst ()->Imu.Accel.Offset.Z > 0L) { Settings::GetInst ()->Imu.Accel.Offset.Z -= Sensitivity; }
+    else                                               { Settings::GetInst ()->Imu.Accel.Offset.Z += Sensitivity; }
 
     LOGI (module, "Offsets: X: " + std::to_string (Settings::GetInst ()->Imu.Accel.Offset.X) +
-                  "[LSB], Y: "   + std::to_string (Settings::GetInst ()->Imu.Accel.Offset.Y) +
-                  "[LSB], Z: "   + std::to_string (Settings::GetInst ()->Imu.Accel.Offset.Z) + "[LSB]");
+                  "[LSB],   Y: " + std::to_string (Settings::GetInst ()->Imu.Accel.Offset.Y) +
+                  "[LSB],   Z: " + std::to_string (Settings::GetInst ()->Imu.Accel.Offset.Z) + "[LSB]");
 }
 
 void Accel9250::setSensitivity (const uint8_t vData)
