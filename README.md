@@ -1,7 +1,7 @@
 # IMU
 
 # I. Description:
-The project uses MPU9250 with examples of using Kalman filters and Quaternion (which is not my implementation)
+The project uses MPU9250 or MPU6500 (without magnetometer) with examples of using Kalman filters and Quaternion (which is not my implementation)
 
 # II. Structure:
 The solution project has been divided into three parts:
