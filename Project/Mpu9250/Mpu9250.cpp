@@ -153,7 +153,8 @@
 #define FIFO_R_W                          0x74
 
 #define WHO_AM_I                          0x75
-#define WHO_AM_I_DATA                     0x71
+#define WHO_AM_I_MPU9250_DATA             0x71
+#define WHO_AM_I_MPU6500_DATA             0x70
 
 #define ANGLE_COEF                        0.05f
 #define LOW_PASS_FILTER_COEFF             0.4f
@@ -199,8 +200,8 @@ void Mpu9250::Init (void)
     data = 0;
     i2cHw.Receive (I2cHw::EI2c::Zero, WHO_AM_I, &data, 1);
 
-    if      (data == WHO_AM_I_DATA) { LOGI (module, "Detected Mpu9250"); }
-    else if (data == 0x70)
+    if      (data == WHO_AM_I_MPU9250_DATA) { LOGI (module, "Detected Mpu9250"); }
+    else if (data == WHO_AM_I_MPU6500_DATA)
     {
         LOGI (module, "Detected Mpu6500. Mag disabled");
         IsMagEnabled = false;
